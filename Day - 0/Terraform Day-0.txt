@@ -1,0 +1,113 @@
+=======================================================
+===============Terraform Day - 0======================
+=======================================================
+
+Terraform is tool to create and manages cloud infrastructure using code.
+It's third party, partially open source tool
+
+**Similar Tools**
+- OpenTofu :- Fully opensource tool alternate for terraform
+- AWS CloudFormation :- AWS IaC tool works only for aws inside
+- Azure ARM templates :- AZURE IaC tool
+- GCP template :- GCP IaC tool 
+
+ 
+Instead of clicking AWS console:
+
+* Create EC2
+* Create VPC
+* Create S3
+
+-- Just write code and terraform does it for you.
+
+This concept is known as Infrastructure as a code.
+
+-----------------------------------------------------------------------------
+
+Why Terraform is used?
+Without Terraform 
+
+- Manual clicks
+- Hard to repeat
+- Human mistakes
+- No version control
+
+* With Terraform 
+- Same infrastructure every time
+- Easy to repeat (dev, test, prod)
+- Can use Git
+- Easy rollback
+One code → multiple environments
+
+-----------------------------------------------------------------------------
+
+Important Terraform Concepts
+
+5 Core terms:
+
+   Term                                  Meaning
+
+- Provider                        Cloud Or Service (AWS, Azure, GCP), 
+            			  Will download plugins of specific provider and
+				  use to create infrastructure.
+
+- Resource			  What you create (EC2, VPC, S3, RDS...)
+
+- Variable 			  Reusable values
+
+- State 			  Terraform's memory 
+
+- Plan & Apply 			  Preview & create infrastructure 
+
+=================================================================================
+
+::Terraform Workflow::
+
+Terraform always follow this order -
+
+1. Initialize:
+	terraform init	--> To initialize the plugins into working directory based on the provider.tf
+	
+	*download provider
+	*Creates .terraform folder
+
+2. Plan:
+	terraform plan --> It will give a template for the resource which we are going to be created (plan of action)
+
+	*Shows what will be created
+	*No changes yet
+
+3. Apply: 
+	terraform apply --> It will create resources in cloud 
+	
+	*Creates real infrastructure 
+
+4. Destroy:
+	terraform destroy --> destroy resources
+	
+	*Deletes everything terraform created
+=======================================================================================================================
+
+****Terraform Configuration Files****
+
+1. Provider.tf --> we will add providers details here ex: aws, aure, GCP to configure specific provider's plugins
+2. Main.tf --> here we will write code to create resources (main code)
+3. Variables.tf --> Where we can write and define variables, instead of hardcoding the values into main.tf
+4. Output.tf --> where we can print the values directly after executing terraform code
+5. terraform.tfvars --> we can pass the values from here to variables.tf to easily manage values
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
