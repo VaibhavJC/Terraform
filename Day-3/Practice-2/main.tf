@@ -6,6 +6,11 @@ resource "aws_instance" "ec2-1" {
     tags = {
       Name = "test"
     }
+
+    root_block_device {
+      delete_on_termination = false
+      
+    }
     
 }
 
