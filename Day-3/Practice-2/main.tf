@@ -4,12 +4,14 @@ resource "aws_instance" "ec2-1" {
   instance_type = "t2.medium"
 
     tags = {
-      Name = "test"
+      Name = "teprodst"
     }
 
     root_block_device {
       delete_on_termination = false
-      
+      tags = {
+        Name = "EBS_Volume"
+      }
     }
     
 }
