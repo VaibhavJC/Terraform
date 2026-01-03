@@ -1,0 +1,68 @@
+1)
+
+main.tf
+
+one resource is created ec2 instance using ami and instance_type
+
+resource "aws_instance" "ec2-1" {
+	ami = "ami-12345679822"
+	instance_type = "t2.micro"
+}
+
+- when we execute terraform plan for the 1st time:
+
+will get information of what resources to create 
+
+it will return 1 to add, 0 to change, 0 to destroy
+
+- when we execute terraform apply plan for the first time:
+
+aws inside create API will trigger and one instance will create.
+here our working directory is refer to desire state and remote (aws) is current state.
+
+now whatever resources we have mentioned in main.tf it will create in aws but it will take some default needful resources also which we have not mentioned in main.tf,
+all those changes, created resources and configured files will be update in tfstate file.
+
+so, when we execute terraform apply one .tfstate will file creates, which contain resource related details  
+
+
+2)
+
+resource "aws_instance" "name" {
+  ami = "ami-00ca570c1b6d79f36"
+  instance_type = "t2.micro"
+
+  tags = {
+    Name = "terra-ec2"
+  }
+}
+
+now I have added one field here "tags" in main.tf,
+
+my .tfstate inside these changes are not there and aws inside also tag name is not there for the created instance.
+
+- now when we execute terraform plan:
+
+will get: 1 to change, because existing resource block inside we updated one change which was previously not there.
+
+- now when we apply 
+
+.tfstate file will update with new changes, also aws inside tag name will update
+
+
+3)
+main.tf
+resource "aws_instance" "name" {
+  ami = "ami-00ca570c1b6d79f36"
+  instance_type = "t2.micro"
+
+}
+
+now, if I remove tag name from here and manually give tag name to instance in AWS
+
+-terraform plan will return:
+	
+   no changes, as tag resource is not in main.tf, terraform will not rack the changes even if it is manually changed on aws.
+
+
+

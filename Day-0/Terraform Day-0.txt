@@ -47,17 +47,17 @@ Important Terraform Concepts
 
    Term                                  Meaning
 
-- Provider                        Cloud Or Service (AWS, Azure, GCP), 
-            			  Will download plugins of specific provider and
-				  use to create infrastructure.
+- Provider                      Cloud Or Service (AWS, Azure, GCP), 
+            			    	Will download plugins of specific provider and
+				                use to create infrastructure.
 
-- Resource			  What you create (EC2, VPC, S3, RDS...)
+- Resource			  			What you create (EC2, VPC, S3, RDS...)
 
-- Variable 			  Reusable values
+- Variable 			  			Reusable values
 
-- State 			  Terraform's memory 
+- State 			  			Terraform's memory 
 
-- Plan & Apply 			  Preview & create infrastructure 
+- Plan & Apply 			  		Preview & create infrastructure 
 
 =================================================================================
 
