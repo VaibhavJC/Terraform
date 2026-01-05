@@ -5,7 +5,7 @@ terraform {
     region = "ap-south-1"
 
     #DynamoDB state lockfile
-    dynamodb_table = "tfstate-lockfile"
-    encrypt = true
+     dynamodb_table = "tfstate-lockfile"
+     encrypt = true
   }
 }
