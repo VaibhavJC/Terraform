@@ -4,13 +4,13 @@ resource "aws_instance" "ec2-1" {
   instance_type = "t2.medium"
 
     tags = {
-      Name = "teprodst"
+      Name = "test"
     }
 
     root_block_device {
       delete_on_termination = false
       tags = {
-        Name = "EBS_Volume"
+        Name = "root_volume_xyzabc"
       }
     }
     
@@ -18,7 +18,6 @@ resource "aws_instance" "ec2-1" {
 
 resource "aws_s3_bucket" "mybucket" {
   bucket = "vaibhav-terraform-bucket-1302"
- 
 }
 
 resource "aws_s3_bucket_versioning" "tf_bucket_version" {
