@@ -12,7 +12,6 @@ module "dev" {
 
   obj_src = "The knight.png"
 
-  enbl_versioning = "Enable"
+  enbl_versioning = "Enabled"
 
-  
 }
