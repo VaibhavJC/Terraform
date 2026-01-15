@@ -5,10 +5,10 @@ module "db" {
 
   sqlEngine            = "mysql"
   engineVersn    = "8.0"
-  instance_type    = "db.t3.micro"
+  instance_type    = "db.t2.micro"
   dbStorage = 5
 
-  my_db_name  = "Mydatabase"
+  my_db_name  = "my-database"
   dbUserName = "user"
   myport     = "3306"
   dbPasswd = "dfsfsfsewfe"
