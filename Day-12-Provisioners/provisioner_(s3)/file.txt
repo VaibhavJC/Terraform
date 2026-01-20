@@ -1,0 +1,4 @@
+file to be upload on s3 bucket from local repository
+new changes added to the file, is it going to update on remote ?
+
+yes it is tracking but not without triggers block, we should add triggers block to track changes inside same resource block.
