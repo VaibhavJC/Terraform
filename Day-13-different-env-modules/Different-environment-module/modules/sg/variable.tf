@@ -1,0 +1,11 @@
+variable "sg-name" {}
+variable "sg-description" {}
+variable "sg-from-port-ing" {}
+variable "sg-to-port-ing" {}
+variable "sg-cidr-blocks-ing" {}
+variable "sg-protocol-ing" {}
+variable "sg-form-port-egr" {}
+variable "sg-to-port-egr" {}
+variable "sg-protocol-egr" {}
+variable "sg-cidr_blocks-egr" {}
+variable "vpc-id" {}

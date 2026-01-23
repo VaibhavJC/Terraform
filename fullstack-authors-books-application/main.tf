@@ -178,43 +178,119 @@ resource "aws_route_table_association" "backend-association-B" {
 
 #Security Group
 
-variable "allowed_ports" {
-    type = map(string)
-    default = {
-        22 = "0.0.0.0/0"
-        80 = "0.0.0.0/0"
-        443 = "0.0.0.0/0"
-        3306 = "0.0.0.0/0"
-    }
+# variable "allowed_ports" {
+#     type = map(string)
+#     default = {
+#         22 = "0.0.0.0/0"
+#         80 = "0.0.0.0/0"
+#         443 = "0.0.0.0/0"
+#         3306 = "0.0.0.0/0"
+#     }
+# }
+
+# resource "aws_security_group" "Cust-SG" {
+#     vpc_id = aws_vpc.main.id
+#     description = "Allow ssh"
+#     name = "ProjectSG"
+#     dynamic "ingress" {
+#       for_each = var.allowed_ports
+#       content {
+#          description = "Allow ${ingress.key}"
+#             from_port = ingress.key
+#             to_port = ingress.key
+#             protocol = "tcp"
+#             cidr_blocks =  [ingress.value]
+#       }
+#     }
+
+#     egress {
+#         from_port = 0
+#         to_port = 0
+#         protocol = "-1"
+#         cidr_blocks = ["0.0.0.0/0"]
+#     }
+
+#     tags = {
+#       Name = "Project-SG"
+#     }
+# }
+
+data "http" "my_ip" {
+  url = "https://ipv4.icanhazip.com"
 }
 
-resource "aws_security_group" "Cust-SG" {
-    vpc_id = aws_vpc.main.id
-    description = "Allow ssh"
-    name = "ProjectSG"
-    dynamic "ingress" {
-      for_each = var.allowed_ports
-      content {
-         description = "Allow ${ingress.key}"
-            from_port = ingress.key
-            to_port = ingress.key
-            protocol = "tcp"
-            cidr_blocks =  [ingress.value]
-      }
-    }
-
-    egress {
-        from_port = 0
-        to_port = 0
-        protocol = "-1"
-        cidr_blocks = ["0.0.0.0/0"]
-    }
-
-    tags = {
-      Name = "Project-SG"
-    }
+resource "aws_security_group" "bastion-SG" {
+  name = "Bastion-SG"
+  vpc_id = aws_vpc.main.id
+  description = "Allow ssh myip"
+  egress {
+    from_port = 0
+    to_port = 0
+    protocol = "-1"
+    cidr_blocks = [ "0.0.0.0/0" ]
+  }
 }
 
+resource "aws_vpc_security_group_ingress_rule" "bastion-ingress-rule" {
+    security_group_id = aws_security_group.bastion-SG.id
+    from_port = 22
+    to_port = 22
+    ip_protocol = "tcp"
+    cidr_ipv4 = "${chomp(data.http.my_ip.response_body)}/32"
+}
+
+resource "aws_security_group" "frontend-sg" {
+  name = "frontend-sg"
+  vpc_id = aws_vpc.main.id
+  description = "Allow bastion and http or https"
+  ingress = [
+    for port in [22, 80, 443] : {
+    description = "allow bastion and external-LB"
+    from_port = port
+    to_port = port
+    protocol = "tcp"
+    cidr_blocks = [ aws_subnet.pub-subnet-A.cidr_block ]
+    ipv6_cidr_blocks = []
+    prefix_list_ids = []
+    security_groups = []
+    self = false
+  }]
+
+  egress {
+    from_port = 0
+    to_port = 0
+    protocol = "-1"
+    cidr_blocks = [ "0.0.0.0/0" ]
+  }
+  depends_on = [ aws_security_group.external-lb-sg ]
+}
+
+resource "aws_security_group" "external-lb-sg" {
+  name = "External-LB-SG"
+  description = "allow HTTP and HTTPS"
+  vpc_id = aws_vpc.main.id
+
+  ingress = [
+    for port in [443, 80] : {
+      description = "allow http and https"
+      from_port = port
+      to_port = port
+      protocol = "tcp"
+      cidr_blocks = ["0.0.0.0/0"]
+      ipv6_cidr_blocks = []
+      prefix_list_ids = []
+      security_groups = []
+      self = false
+    }
+  ]
+
+  egress {
+    from_port = 0
+    to_port = 0
+    protocol = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
 #creating key-pair
 
 resource "aws_key_pair" "privateKey" {

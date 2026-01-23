@@ -42,7 +42,7 @@ resource "null_resource" "new-file-create" {
       
       inline = [
         "touch file1",
-        "echo 'Hellow from null resource >> file1'"
+        "echo 'Hellow from null resource >> file1'",
         ]
     }
 
