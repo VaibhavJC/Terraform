@@ -9,17 +9,23 @@ pipeline {
         }
         stage('terraform init'){
             steps{
-               sh'terraform init -reconfigure'
+               dir('Day-1/Practice-2'){
+                    sh'terraform init -reconfigure'
+               }
             }
         }        
         stage('terraform plan'){
             steps{
-                 sh'terraform plan'
+                 dir('Day-1/Practice-2'){
+                    sh'terraform plan'
+                 }
             }
         }
         stage('terraform apply'){
             steps{
-                sh'terraform apply -auto-approve'
+                dir('Day-1/Practice-2'){
+                    sh'terraform apply -auto-approve'
+                }
             }
         }
     }//stages end here
